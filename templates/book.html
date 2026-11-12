@@ -1,0 +1,355 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Library Books</title>
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6fb;
+            margin: 0;
+        }
+
+        .navbar {
+            background: #243b64;
+            color: white;
+            padding: 18px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .container {
+            width: 90%;
+            margin: 25px auto;
+        }
+
+        .panel {
+            background: white;
+            padding: 22px;
+            margin-bottom: 22px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #ddd;
+        }
+
+        h1, h2 {
+            color: #243b64;
+        }
+
+        input, select {
+            padding: 12px;
+            width: 95%;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            background: #243b64;
+            color: white;
+            padding: 12px 22px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        button:hover {
+            background: #36588d;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background: #243b64;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f2f4f8;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .search-box input {
+            flex: 1;
+        }
+
+        .search-box button {
+            margin-top: 0;
+        }
+
+        @media(max-width: 650px) {
+            .search-box {
+                display: block;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 7px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+
+        <h2>📚 Library Books</h2>
+
+        <a href="/dashboard">Back to Dashboard</a>
+
+    </div>
+
+
+    <div class="container">
+
+
+        <!-- Add New Book -->
+        {% if session.get('role') == 'admin' %}
+
+        <div class="panel">
+
+            <h1>➕ Add New Book</h1>
+
+            <form action="/add_book" method="POST">
+
+                <input type="text"
+                name="book_name"
+                placeholder="Enter Book Name"
+                required>
+
+                <input type="text"
+                name="author"
+                placeholder="Enter Author Name"
+                required>
+
+                <input type="text"
+                name="category"
+                placeholder="Enter Category"
+                required>
+
+                <input type="number"
+                name="quantity"
+                placeholder="Enter Quantity"
+                min="0"
+                required>
+
+                <button type="submit">Add Book</button>
+
+            </form>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- Book Search -->
+        <div class="panel">
+
+            <h2>🔍 Search Books</h2>
+
+            <form action="/book" method="GET">
+
+                <div class="search-box">
+
+                    <input type="text"
+                    name="search"
+                    placeholder="Search by Book Name or Author"
+                    value="{{ search }}">
+
+                    <button type="submit">Search</button>
+
+                </div>
+
+            </form>
+
+            <a href="/book">Show All Books</a>
+
+        </div>
+
+
+        <!-- Book Recommendation -->
+        <div class="panel">
+
+            <h2>⭐ Book Recommendations</h2>
+
+            <p>Select your favourite category to find books.</p>
+
+            <form action="/book" method="GET">
+
+                <select name="category" required>
+
+                    <option value="">Select Book Category</option>
+
+                    <option value="Computer Science"
+                    {% if selected_category == 'Computer Science' %}selected{% endif %}>
+                    Computer Science
+                    </option>
+
+                    <option value="Science"
+                    {% if selected_category == 'Science' %}selected{% endif %}>
+                    Science
+                    </option>
+
+                    <option value="Fiction"
+                    {% if selected_category == 'Fiction' %}selected{% endif %}>
+                    Fiction
+                    </option>
+
+                    <option value="Biography"
+                    {% if selected_category == 'Biography' %}selected{% endif %}>
+                    Biography
+                    </option>
+
+                    <option value="Literature"
+                    {% if selected_category == 'Literature' %}selected{% endif %}>
+                    Literature
+                    </option>
+
+                    <option value="History"
+                    {% if selected_category == 'History' %}selected{% endif %}>
+                    History
+                    </option>
+
+                    <option value="Self Development"
+                    {% if selected_category == 'Self Development' %}selected{% endif %}>
+                    Self Development
+                    </option>
+
+                </select>
+
+                <button type="submit">Recommend Books</button>
+
+            </form>
+
+        </div>
+
+
+        <!-- Available Books -->
+        <div class="panel">
+
+            <h2>📖 Available Books</h2>
+
+            <table>
+
+                <tr>
+                    <th>Book ID</th>
+                    <th>Book Name</th>
+                    <th>Author</th>
+                    <th>Category</th>
+                    <th>Quantity</th>
+                </tr>
+
+                {% for book in books %}
+
+                <tr>
+
+                    <td>{{ book.id }}</td>
+
+                    <td>{{ book.book_name }}</td>
+
+                    <td>{{ book.author }}</td>
+
+                    <td>{{ book.category }}</td>
+
+                    <td>{{ book.quantity }}</td>
+
+                </tr>
+
+                {% else %}
+
+                <tr>
+                    <td colspan="5">
+                        No books found!
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+        </div>
+
+
+        <!-- Student Borrowing -->
+        {% if session.get('role') == 'student' %}
+
+        <div class="panel">
+
+            <h2>📚 Borrow a Book</h2>
+
+            <form action="/borrow_book" method="POST">
+
+                <label>Select Book</label>
+
+                <select name="book_id" required>
+
+                    <option value="">Choose a Book</option>
+
+                    {% for book in books %}
+
+                        {% if book.quantity > 0 %}
+
+                        <option value="{{ book.id }}">
+                            {{ book.book_name }} - {{ book.author }}
+                            ({{ book.quantity }} available)
+                        </option>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+                </select>
+
+                <label>Return Due Date</label>
+
+                <input type="date"
+                name="due_date"
+                required>
+
+                <button type="submit">Borrow Book</button>
+
+            </form>
+
+            <br>
+
+            <a href="/my_borrowings">View My Borrowed Books</a>
+
+        </div>
+
+        {% endif %}
+
+
+    </div>
+
+</body>
+</html>

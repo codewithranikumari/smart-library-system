@@ -1,0 +1,159 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Borrowing Statistics</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f6fb;
+            margin: 0;
+        }
+
+        .navbar {
+            background: #243b64;
+            color: white;
+            padding: 18px 30px;
+        }
+
+        .container {
+            width: 90%;
+            margin: 30px auto;
+        }
+
+        .cards {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            flex: 1;
+            min-width: 150px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #ddd;
+            text-align: center;
+        }
+
+        .card h2 {
+            color: #243b64;
+        }
+
+        table {
+            width: 100%;
+            background: white;
+            border-collapse: collapse;
+            margin-top: 25px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background: #243b64;
+            color: white;
+        }
+
+        a {
+            color: #243b64;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <h2>Borrowing Statistics</h2>
+</div>
+
+<div class="container">
+
+    <a href="/dashboard">Back to Dashboard</a>
+
+    <h2>Library Overview</h2>
+
+    <div class="cards">
+
+        <div class="card">
+            <h3>Total Borrowings</h3>
+            <h2>{{ total_borrowings }}</h2>
+        </div>
+
+        <div class="card">
+            <h3>Issued Books</h3>
+            <h2>{{ issued }}</h2>
+        </div>
+
+        <div class="card">
+            <h3>Returned Books</h3>
+            <h2>{{ returned }}</h2>
+        </div>
+
+        <div class="card">
+            <h3>Overdue Books</h3>
+            <h2>{{ overdue }}</h2>
+        </div>
+
+    </div>
+
+    <h2>Most Borrowed Books</h2>
+
+    <table>
+        <tr>
+            <th>Book Name</th>
+            <th>Total Times Borrowed</th>
+        </tr>
+
+        {% for book in most_borrowed %}
+        <tr>
+            <td>{{ book.book_name }}</td>
+            <td>{{ book.total }}</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="2">No borrowing records available.</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+    <h2>All Borrowing Records</h2>
+
+    <table>
+        <tr>
+            <th>Student</th>
+            <th>Book</th>
+            <th>Issue Date</th>
+            <th>Due Date</th>
+            <th>Return Date</th>
+            <th>Status</th>
+        </tr>
+
+        {% for record in records %}
+        <tr>
+            <td>{{ record.student_name }}</td>
+            <td>{{ record.book_name }}</td>
+            <td>{{ record.issue_date }}</td>
+            <td>{{ record.due_date }}</td>
+            <td>{{ record.return_date or 'Not Returned' }}</td>
+            <td>{{ record.status }}</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="6">No borrowing records found.</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+</div>
+
+</body>
+</html>
+```

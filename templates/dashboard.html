@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Library Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <h2>📚 Smart Library Management</h2>
+        <a href="/logout">Logout</a>
+    </div>
+
+    <div class="container">
+
+        <div class="panel">
+            <h1>Welcome, {{ name }}!</h1>
+            <p>You are logged in as {{ role }}.</p>
+        </div>
+
+        <div class="cards">
+
+            {% if role == "admin" %}
+
+            <div class="card">
+                <h1>🎓</h1>
+                <h2>Students</h2>
+                <a href="/students">View Students</a>
+            </div>
+
+            <div class="card">
+                <h1>📚</h1>
+                <h2>Books</h2>
+                <a href="/book">View Books</a>
+            </div>
+
+            {% else %}
+
+            <div class="card">
+                <h1>📖</h1>
+                <h2>Library Books</h2>
+                <a href="/book">View Books</a>
+            </div>
+
+            <div class="card">
+                <h1>👤</h1>
+                <h2>My Account</h2>
+                <p>{{ name }}</p>
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</body>
+</html>

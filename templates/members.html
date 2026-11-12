@@ -1,0 +1,93 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Library Members</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f6fb;
+            margin: 0;
+        }
+
+        .navbar {
+            background: #243b64;
+            color: white;
+            padding: 18px 30px;
+        }
+
+        .container {
+            width: 90%;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background: #243b64;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f2f4f8;
+        }
+
+        a {
+            color: #243b64;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <h2>Library Members Management</h2>
+</div>
+
+<div class="container">
+
+    <h2>Registered Members</h2>
+
+    <a href="/dashboard">Back to Dashboard</a>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Student Name</th>
+            <th>Username</th>
+            <th>Total Borrowings</th>
+        </tr>
+
+        {% for student in students %}
+        <tr>
+            <td>{{ student.id }}</td>
+            <td>{{ student.name }}</td>
+            <td>{{ student.username }}</td>
+            <td>{{ student.total_borrowings }}</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="4">No members registered yet.</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+</div>
+
+</body>
+</html>
+```
